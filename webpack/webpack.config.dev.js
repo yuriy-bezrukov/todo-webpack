@@ -1,7 +1,8 @@
-const Path = require('path');
-const Webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const StylelintPlugin = require('stylelint-webpack-plugin');
+const liveReloadPlugin = require('webpack-livereload-plugin');
 
 const common = require('./webpack.common.js');
 
@@ -12,22 +13,25 @@ module.exports = merge(common, {
     chunkFilename: 'js/[name].chunk.js',
   },
   devServer: {
+    contentBase: path.join(__dirname, '../src'),
+    watchContentBase: true,
     inline: true,
     hot: true,
   },
   plugins: [
-    new Webpack.DefinePlugin({
+    new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
+    new liveReloadPlugin(),
     // new StylelintPlugin({
-    //   files: Path.join('src', '**/*.s?(a|c)ss'),
+    //   files: path.join('src', '**/*.s?(a|c)ss'),
     // }),
   ],
   module: {
     rules: [
       {
         test: /\.js$/,
-        include: Path.resolve(__dirname, '../src'),
+        include: path.resolve(__dirname, '../src'),
         enforce: 'pre',
         loader: 'eslint-loader',
         options: {
@@ -40,7 +44,7 @@ module.exports = merge(common, {
       },
       {
         test: /\.js$/,
-        include: Path.resolve(__dirname, '../src'),
+        include: path.resolve(__dirname, '../src'),
         loader: 'babel-loader',
       },
       {
