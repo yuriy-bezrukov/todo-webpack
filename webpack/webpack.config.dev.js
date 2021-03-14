@@ -23,9 +23,9 @@ module.exports = merge(common, {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new liveReloadPlugin(),
-    // new StylelintPlugin({
-    //   files: path.join('src', '**/*.s?(a|c)ss'),
-    // }),
+    new StylelintPlugin({
+      files: path.join('src', '**/*.s?(a|c)ss'),
+    }),
   ],
   module: {
     rules: [
@@ -49,7 +49,7 @@ module.exports = merge(common, {
       },
       {
         test: /\.s?css$/i,
-        use: ['style-loader', 'css-loader?sourceMap=true', 'postcss-loader'/*, 'sass-loader'*/],
+        use: ['style-loader', 'css-loader?sourceMap=true', 'postcss-loader', 'sass-loader'],
       },
     ],
   }

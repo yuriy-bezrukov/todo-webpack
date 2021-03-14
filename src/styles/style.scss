@@ -1,0 +1,78 @@
+body {
+  /* https://www.figma.com/file/GdzR0Y4gMtV9ERf5GNryJpLQ/Tasker */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f45e6d;
+  color: #fff;
+}
+
+.app {
+  max-width: 400px;
+  margin: 0 auto;
+
+  &__title {
+    text-align: center;
+    font-size: 24px;
+  }
+}
+
+.add-task-form {
+  margin: 24px 0 0 0;
+
+  &__input {
+    padding: 15px 10px;
+    font-size: 18px;
+    width: 335px;
+    border: none;
+    outline: none;
+  }
+
+  &__submit {
+    padding: 14px 10px;
+    font-size: 18px;
+    background: none;
+    transition: background 0.3s;
+    border: 1px solid #ffa2a2;
+    color: #ffa2a2;
+    cursor: not-allowed;
+
+    &:hover {
+      background: #ec3749;
+    }
+
+    &--active {
+      border: 1px solid #fff;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ffa7a7;
+  position: relative;
+  margin: 20px 0 0 0;
+
+  &__state-toggle {
+    margin: 0 15px 0 0;
+  }
+
+  &__title {
+    font-size: 24px;
+  }
+
+  &--closed {
+    color: #ff9ba5;
+
+    &::after {
+      display: block;
+      content: "";
+      width: 100%;
+      height: 1px;
+      background: #ff7a7a;
+      position: absolute;
+      z-index: -1;
+    }
+  }
+}
