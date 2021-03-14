@@ -7,55 +7,58 @@ if (process.env.NODE_ENV === 'development') {
 
 let tasks = getStorage();
 let taskId = 0;
+const TASK_LIST_STORAGE_KEY = 'task-list-storage';
 
-renderTasks(tasks);
+renderTaskList(tasks);
 
-document.querySelector('.go').addEventListener('click', onAddTaskButton);
+const addTaskForm = document.querySelector('.add-task-form');
+addTaskForm.addEventListener('submit', onAddTask);
 
-function onAddTaskButton() {
-  const inputText = document.querySelector('.doItem');
-  const taskText = inputText.value;
+function onAddTask(e) {
+  e.preventDefault();
+  const inputText = document.querySelector('.add-task-form__input');
+  const newTask = { id: taskId++, title: inputText.value };
   inputText.value = '';
-  const newTask = { id: taskId++, title: taskText };
   tasks.push(newTask);
   saveStorage(tasks);
-  renderTask(newTask.title, newTask.id);
+  renderTask(newTask);
 }
 
-function renderTask(taskTitle, id) {
-  const itemList = document.querySelector('.itemList');
+function renderTask(task) {
+  const itemList = document.querySelector('.task-list');
   const newTaskElement = document.createElement('div');
   newTaskElement.innerHTML = `
-    <div class="task" data-task-id="${id}">
-      <h1>${taskTitle}</h1>
-      <button class="taskRemove">X</button>
+    <div class="task" data-task-id="${task.id}">
+      <h1>${task.title}</h1>
+      <button class="task__remove">X</button>
     </div>
   `;
   itemList.appendChild(newTaskElement);
 }
 
 function saveStorage(taskList) {
-  localStorage.setItem('task-list', JSON.stringify(taskList));
+  localStorage.setItem(TASK_LIST_STORAGE_KEY, JSON.stringify(taskList));
 }
 
 function getStorage() {
-  const dataStr = localStorage.getItem('task-list');
+  const dataStr = localStorage.getItem(TASK_LIST_STORAGE_KEY);
   if (dataStr === null) {
     return [];
   }
   return JSON.parse(dataStr);
 }
 
-function renderTasks(taskList) {
+function renderTaskList(taskList) {
   for (const task of taskList) {
-    renderTask(task.title, task.id);
+    renderTask(task);
   }
 }
 
-document.querySelector('.itemList').addEventListener('click', onRemoveTaskClick);
+const taskList = document.querySelector('.task-list');
+taskList.addEventListener('click', onRemoveTask);
 
-function onRemoveTaskClick(e) {
-  if (e.target.classList.contains('taskRemove')) {
+function onRemoveTask(e) {
+  if (e.target.classList.contains('task__remove')) {
     e.target.parentElement.remove();
     const taskId = Number.parseInt(e.target.parentElement.dataset.taskId);
 
